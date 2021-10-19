@@ -1,4 +1,4 @@
-package log
+package logger
 
 import (
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
@@ -12,6 +12,12 @@ type FileExporter struct {
 	Core *File
 }
 
+// Encoder
+/**
+ * @Description:
+ * @receiver e
+ * @return zapcore.Encoder
+ */
 func (e *FileExporter) Encoder() zapcore.Encoder {
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:        Datetime.ToString(),
@@ -43,6 +49,12 @@ func (e *FileExporter) Encoder() zapcore.Encoder {
 	return encoder
 }
 
+// Writer
+/**
+ * @Description:
+ * @receiver e
+ * @return zapcore.WriteSyncer
+ */
 func (e *FileExporter) Writer() zapcore.WriteSyncer {
 	filename := path.Join(e.Core.FileDirectory, e.Core.FileName)
 
@@ -59,6 +71,12 @@ func (e *FileExporter) Writer() zapcore.WriteSyncer {
 	return zapcore.AddSync(hook)
 }
 
+// Level
+/**
+ * @Description:
+ * @receiver e
+ * @return zapcore.Level
+ */
 func (e *FileExporter) Level() zapcore.Level {
 	return e.Core.GetLevel().zapLevel()
 }

@@ -1,6 +1,7 @@
-package log
+package logger
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -16,23 +17,31 @@ const (
 	InfoLevel
 	WarnLevel
 	ErrorLevel
-	CriticalLevel // Critical exists only for config backward compatibility.
+	FatalLevel // Critical exists only for config backward compatibility.
 )
 
 var levelStrings = map[Level]string{
-	DebugLevel:    "debug",
-	InfoLevel:     "info",
-	WarnLevel:     "warning",
-	ErrorLevel:    "error",
-	CriticalLevel: "critical",
+	DebugLevel: "debug",
+	InfoLevel:  "info",
+	WarnLevel:  "warning",
+	ErrorLevel: "error",
+	FatalLevel: "fatal",
 }
 
 var zapLevels = map[Level]zapcore.Level{
-	DebugLevel:    zapcore.DebugLevel,
-	InfoLevel:     zapcore.InfoLevel,
-	WarnLevel:     zapcore.WarnLevel,
-	ErrorLevel:    zapcore.ErrorLevel,
-	CriticalLevel: zapcore.ErrorLevel,
+	DebugLevel: zapcore.DebugLevel,
+	InfoLevel:  zapcore.InfoLevel,
+	WarnLevel:  zapcore.WarnLevel,
+	ErrorLevel: zapcore.ErrorLevel,
+	FatalLevel: zapcore.ErrorLevel,
+}
+
+var zapPrints = map[Level]func(ctx context.Context) func(msg string, fields ...zapcore.Field){
+	DebugLevel: debugCtxFunc,
+	InfoLevel:  infoCtxFunc,
+	WarnLevel:  warnCtxFunc,
+	ErrorLevel: errorCtxFunc,
+	FatalLevel: criticalCtxFunc,
 }
 
 // String returns the name of the logging level.
@@ -62,6 +71,12 @@ func (l *Level) Unpack(str string) error {
 	return fmt.Errorf(fmt.Sprintf("invalid level '%v'", str))
 }
 
+// zapLevel
+/**
+ * @Description:
+ * @receiver l
+ * @return zapcore.Level
+ */
 func (l Level) zapLevel() zapcore.Level {
 	z, found := zapLevels[l]
 	if found {

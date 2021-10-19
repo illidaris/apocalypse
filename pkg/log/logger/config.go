@@ -1,4 +1,4 @@
-package log
+package logger
 
 type Base struct {
 	Level  string `toml:"level" json:"level"`   // Log level.
@@ -21,6 +21,12 @@ type Std struct {
 	Base
 }
 
+// NewExporter
+/**
+ * @Description:
+ * @receiver cfg
+ * @return IExporter
+ */
 func (cfg *Std) NewExporter() IExporter {
 	return &StdExporter{
 		Core: cfg,
@@ -37,6 +43,12 @@ type File struct {
 	Compress      bool   `toml:"compress" json:"compress"`     // Compress
 }
 
+// NewExporter
+/**
+ * @Description:
+ * @receiver cfg
+ * @return IExporter
+ */
 func (cfg *File) NewExporter() IExporter {
 	return &FileExporter{
 		Core: cfg,
@@ -48,7 +60,6 @@ func (cfg *File) NewExporter() IExporter {
  * @Description: serializes log related config in toml/json.
  */
 type Config struct {
-	CallSkip int   `toml:"callSkip" json:"callSkip"` // Log CallSkip
-	FileCfg  *File `toml:"file" json:"file"`         // FileCfg log config.
-	StdCfg   *Std  `toml:"std" json:"std"`           // StdCfg log config.
+	FileCfg *File `toml:"file" json:"file"` // FileCfg log config.
+	StdCfg  *Std  `toml:"std" json:"std"`   // StdCfg log config.
 }

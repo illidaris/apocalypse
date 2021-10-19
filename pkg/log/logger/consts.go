@@ -1,4 +1,4 @@
-package log
+package logger
 
 type LoggerKey string
 
@@ -10,6 +10,12 @@ const (
 	Message  LoggerKey = "message"
 )
 
+// ToString
+/**
+ * @Description:
+ * @receiver key
+ * @return string
+ */
 func (key LoggerKey) ToString() string {
 	return string(key)
 }
