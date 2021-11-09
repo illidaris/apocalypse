@@ -8,5 +8,5 @@ import (
 func TestNew(t *testing.T) {
 	New(nil)
 	zap.L().Info("123")
-	zap.L().WithOptions()
+	zap.L().Info("1223")
 }

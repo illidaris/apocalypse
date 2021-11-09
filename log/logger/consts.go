@@ -10,12 +10,12 @@ const (
 	Message  LoggerKey = "message"
 )
 
-// ToString
+// String
 /**
  * @Description:
  * @receiver key
  * @return string
  */
-func (key LoggerKey) ToString() string {
+func (key LoggerKey) String() string {
 	return string(key)
 }

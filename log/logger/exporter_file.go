@@ -8,9 +8,7 @@ import (
 	"time"
 )
 
-type FileExporter struct {
-	Core *File
-}
+type FileExporter struct{}
 
 // Encoder
 /**
@@ -20,12 +18,12 @@ type FileExporter struct {
  */
 func (e *FileExporter) Encoder() zapcore.Encoder {
 	encoderConfig := zapcore.EncoderConfig{
-		TimeKey:        Datetime.ToString(),
-		LevelKey:       LevelKey.ToString(),
+		TimeKey:        Datetime.String(),
+		LevelKey:       LevelKey.String(),
 		NameKey:        "logger",
-		CallerKey:      Caller.ToString(),
+		CallerKey:      Caller.String(),
 		FunctionKey:    zapcore.OmitKey,
-		MessageKey:     Message.ToString(),
+		MessageKey:     Message.String(),
 		StacktraceKey:  "stacktrace",
 		LineEnding:     zapcore.DefaultLineEnding,
 		EncodeLevel:    zapcore.LowercaseLevelEncoder,
@@ -37,16 +35,7 @@ func (e *FileExporter) Encoder() zapcore.Encoder {
 		enc.AppendString(t.UTC().Format("2006-01-02T15:04:05.000Z"))
 	}
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
-	var encoder zapcore.Encoder
-	switch e.Core.Format {
-	case "console":
-		encoder = zapcore.NewConsoleEncoder(encoderConfig) // 普通模式
-	case "json":
-		encoder = zapcore.NewJSONEncoder(encoderConfig) // json格式
-	default:
-		encoder = zapcore.NewConsoleEncoder(encoderConfig) // 普通模式
-	}
-	return encoder
+	return fmtEncoder(config.Format, encoderConfig)
 }
 
 // Writer
@@ -56,12 +45,12 @@ func (e *FileExporter) Encoder() zapcore.Encoder {
  * @return zapcore.WriteSyncer
  */
 func (e *FileExporter) Writer() zapcore.WriteSyncer {
-	filename := path.Join(e.Core.FileDirectory, e.Core.FileName)
+	filename := path.Join(config.FileDirectory, config.FileName)
 
 	hook, err := rotatelogs.New(
 		filename+".%Y%m%d%H", // 没有使用go风格反人类的format格式
 		rotatelogs.WithLinkName(filename),
-		rotatelogs.WithMaxAge(time.Hour*24*time.Duration(e.Core.MaxDays)), // 保存30天
+		rotatelogs.WithMaxAge(time.Hour*24*time.Duration(config.MaxDays)), // 保存30天
 		rotatelogs.WithRotationTime(time.Hour*24),                         //切割频率 24小时
 	)
 	if err != nil {
@@ -78,5 +67,5 @@ func (e *FileExporter) Writer() zapcore.WriteSyncer {
  * @return zapcore.Level
  */
 func (e *FileExporter) Level() zapcore.Level {
-	return e.Core.GetLevel().zapLevel()
+	return config.GetLevel().zapLevel()
 }

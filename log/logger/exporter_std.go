@@ -6,9 +6,7 @@ import (
 	"os"
 )
 
-type StdExporter struct {
-	Core *Std
-}
+type StdExporter struct{}
 
 // Encoder
 /**
@@ -17,7 +15,7 @@ type StdExporter struct {
  * @return zapcore.Encoder
  */
 func (e *StdExporter) Encoder() zapcore.Encoder {
-	return zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
+	return fmtEncoder(config.StdFormat, zap.NewDevelopmentEncoderConfig())
 }
 
 // Writer
@@ -37,5 +35,5 @@ func (e *StdExporter) Writer() zapcore.WriteSyncer {
  * @return zapcore.Level
  */
 func (e *StdExporter) Level() zapcore.Level {
-	return e.Core.GetLevel().zapLevel()
+	return config.GetStdLevel().zapLevel()
 }

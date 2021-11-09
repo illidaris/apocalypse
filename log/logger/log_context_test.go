@@ -15,7 +15,9 @@ func TestWithContext(t *testing.T) {
 	ctx = NewContext(ctx, []zapcore.Field{
 		{Key: "test2", Type: zapcore.StringType, String: "test1234567"},
 	}...)
+	funcDebug(ctx)
 	funcInfo(ctx)
+	Info("xx")
 }
 
 func funcDebug(ctx context.Context) {

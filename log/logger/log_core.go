@@ -10,7 +10,7 @@ import (
  * @param msg
  */
 func Debug(msg string) {
-	funcLogger.Debug(msg)
+	printCtx(context.TODO(), DebugLevel, msg)
 }
 
 // DebugCtx
@@ -29,7 +29,7 @@ func DebugCtx(ctx context.Context, msg string) {
  * @param msg
  */
 func Info(msg string) {
-	funcLogger.Info(msg)
+	printCtx(context.TODO(), InfoLevel, msg)
 }
 
 // InfoCtx
@@ -48,7 +48,7 @@ func InfoCtx(ctx context.Context, msg string) {
  * @param msg
  */
 func Warn(msg string) {
-	funcLogger.Warn(msg)
+	printCtx(context.TODO(), WarnLevel, msg)
 }
 
 // WarnCtx
@@ -67,7 +67,7 @@ func WarnCtx(ctx context.Context, msg string) {
  * @param msg
  */
 func Error(msg string) {
-	funcLogger.Error(msg)
+	printCtx(context.TODO(), ErrorLevel, msg)
 }
 
 // ErrorCtx
@@ -86,7 +86,7 @@ func ErrorCtx(ctx context.Context, msg string) {
  * @param msg
  */
 func Fatal(msg string) {
-	funcLogger.Fatal(msg)
+	printCtx(context.TODO(), FatalLevel, msg)
 }
 
 // FatalCtx
