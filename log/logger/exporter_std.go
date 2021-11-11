@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"os"
 )
@@ -15,7 +14,7 @@ type StdExporter struct{}
  * @return zapcore.Encoder
  */
 func (e *StdExporter) Encoder() zapcore.Encoder {
-	return fmtEncoder(config.StdFormat, zap.NewDevelopmentEncoderConfig())
+	return fmtEncoder(config.StdFormat, configEncoder())
 }
 
 // Writer

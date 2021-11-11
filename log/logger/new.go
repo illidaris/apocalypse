@@ -5,13 +5,6 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-var (
-	config *Config // config
-
-	ctxLogger  *zap.Logger // log core key-value from context
-	funcLogger *zap.Logger // log core without context
-)
-
 func New(cfg *Config) {
 	if cfg == nil {
 		cfg = defaultConfig()

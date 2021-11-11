@@ -1,8 +1,6 @@
 package logger
 
-import (
-	"context"
-)
+import "context"
 
 // Debug
 /**
