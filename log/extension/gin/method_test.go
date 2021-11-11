@@ -54,6 +54,10 @@ func TestLoggerHandler(t *testing.T) {
 	}
 }
 
+func ExampleLoggerHandler() {
+	router.Use(LoggerHandler())
+}
+
 // TestRecoverHandler test error log
 func TestRecoverHandler(t *testing.T) {
 	uri := "/error"
@@ -62,4 +66,8 @@ func TestRecoverHandler(t *testing.T) {
 	if code != 500 {
 		t.Errorf("reponse code is not 200，code:%d\n", code)
 	}
+}
+
+func ExampleRecoverHandler() {
+	router.Use(RecoverHandler())
 }

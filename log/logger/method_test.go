@@ -31,6 +31,7 @@ func ExampleDebug() {
 func TestDebugCtx(t *testing.T) {
 	methodProxyWithCtx(func(ctx context.Context) {
 		DebugCtx(ctx, "debug with ctx")
+		WithContext(ctx).Info("info log")
 	})
 }
 
