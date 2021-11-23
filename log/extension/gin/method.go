@@ -33,6 +33,8 @@ func LoggerHandler() gin.HandlerFunc {
 			zap.String(consts.TraceID.String(), traceID),
 			zap.String(consts.SessionID.String(), sessionID.String()),
 			zap.Int64(consts.SessionBirth.String(), sessionBirth.UTC().UnixNano()))
+		// instead of ctx
+		c.Request.WithContext(ctx)
 		// before
 		c.Next()
 		// after

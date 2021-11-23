@@ -12,6 +12,7 @@ import (
 )
 
 func TestNewXLogger(t *testing.T) {
+
 	Convey("Setup", t, func() {
 		session, mock := getSession()
 		repo := NewPersonRepo(session)
@@ -38,6 +39,7 @@ func TestNewXLogger(t *testing.T) {
 			So(mock.ExpectationsWereMet(), ShouldBeNil)
 		})
 	})
+
 }
 
 func ExampleNewXLogger() {
