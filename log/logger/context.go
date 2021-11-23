@@ -27,8 +27,8 @@ func WithContext(ctx context.Context) *zap.Logger {
 	if ctx == nil {
 		return ctxLogger
 	}
-	if ctxLogger, ok := ctx.Value("_CtxLogger").(*zap.Logger); ok {
-		return ctxLogger
+	if l, ok := ctx.Value("_CtxLogger").(*zap.Logger); ok {
+		return l
 	}
 	return ctxLogger
 }

@@ -33,15 +33,16 @@ func LoggerHandler() gin.HandlerFunc {
 			zap.String(consts.TraceID.String(), traceID),
 			zap.String(consts.SessionID.String(), sessionID.String()),
 			zap.Int64(consts.SessionBirth.String(), sessionBirth.UTC().UnixNano()))
-		// instead of ctx
-		c.Request.WithContext(ctx)
+		// instead of request
+		c.Request = c.Request.WithContext(ctx)
 		// before
 		c.Next()
 		// after
 		cost := time.Since(sessionBirth)
 		path := c.Request.URL.Path
 		query := c.Request.URL.RawQuery
-		ctx = logger.NewContext(ctx,
+		curCtx := c.Request.Context()
+		curCtx = logger.NewContext(curCtx,
 			zap.String(string(HTTPMethod), c.Request.Method),
 			zap.String(string(HTTPContentType), contentType),
 			zap.String(string(HTTPPath), path),
@@ -51,7 +52,7 @@ func LoggerHandler() gin.HandlerFunc {
 			zap.Int(string(HTTPStatusCode), c.Writer.Status()),
 			zap.Duration(consts.Duration.String(), cost),
 		)
-		logger.InfoCtx(ctx, c.Errors.ByType(gin.ErrorTypePrivate).String())
+		logger.InfoCtx(curCtx, c.Errors.ByType(gin.ErrorTypePrivate).String())
 	}
 }
 
