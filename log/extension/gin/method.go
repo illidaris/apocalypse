@@ -25,13 +25,17 @@ func LoggerHandler() gin.HandlerFunc {
 		// content type
 		contentType := c.GetHeader("Content-Type")
 		// session
-		sessionID, _ := uuid.NewUUID()
+		uuid, _ := uuid.NewUUID()
+		sID := uuid.String()
+		if traceID == "" {
+			traceID = sID
+		}
 		sessionBirth := time.Now()
 		// assembly trace & session
 		rawCtx := c.Request.Context()
 		ctx := logger.NewContext(rawCtx,
 			zap.String(consts.TraceID.String(), traceID),
-			zap.String(consts.SessionID.String(), sessionID.String()),
+			zap.String(consts.SessionID.String(), sID),
 			zap.Int64(consts.SessionBirth.String(), sessionBirth.UTC().UnixNano()))
 		// instead of request
 		c.Request = c.Request.WithContext(ctx)
