@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"github.com/illidaris/apocalypse/log/logger"
 	"github.com/illidaris/apocalypse/pkg/consts"
 	"go.uber.org/zap"
@@ -20,25 +19,11 @@ import (
 // LoggerHandler record log
 func LoggerHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// trace
-		traceID := c.GetHeader("X-Request-ID")
 		// content type
 		contentType := c.GetHeader("Content-Type")
-		// session
-		uuid, _ := uuid.NewUUID()
-		sID := uuid.String()
-		if traceID == "" {
-			traceID = sID
-		}
 		sessionBirth := time.Now()
-		// assembly trace & session
-		rawCtx := c.Request.Context()
-		ctx := logger.NewContext(rawCtx,
-			zap.String(consts.TraceID.String(), traceID),
-			zap.String(consts.SessionID.String(), sID),
-			zap.Int64(consts.SessionBirth.String(), sessionBirth.UTC().UnixNano()))
-		// instead of request
-		c.Request = c.Request.WithContext(ctx)
+		// trace
+		WithTrace(c, sessionBirth)
 		// before
 		c.Next()
 		// after
