@@ -17,7 +17,7 @@ var (
 
 func init() {
 	// init log core
-	logger.New(nil)
+	logger.OnlyConsole()
 	// init gin
 	router = gin.Default()
 	router.Use(LoggerHandler())

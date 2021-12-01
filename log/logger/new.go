@@ -14,6 +14,16 @@ func New(cfg *Config) {
 	NewLogger(exps...)
 }
 
+func OnlyConsole() {
+	if config == nil {
+		config = &Config{
+			StdLevel:  "debug",
+			StdFormat: "console",
+		}
+	}
+	NewLogger(&StdExporter{})
+}
+
 func NewLogger(exporters ...IExporter) {
 	coreTree := make([]zapcore.Core, 0)
 	for _, exp := range exporters {

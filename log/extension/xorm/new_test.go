@@ -64,7 +64,7 @@ func getSession() (*xorm.Session, sqlmock.Sqlmock) {
 	eng.DB().DB = db
 	eng.ShowSQL(true)
 
-	core.New(nil)
+	core.OnlyConsole()
 
 	eng.SetLogger(NewXLogger())
 
